@@ -17,7 +17,7 @@ The dashboard answers key business questions like:
 - Identify the highest-priced pizza.
 - Identify the most common pizza size ordered.
 - List the top 5 most ordered pizza types along with their quantities.
-![Dashboard Preview](./powerbi/dashboard_preview.png)
+
 ![Power BI Dashboard Image](https://github.com/user-attachments/assets/27409ff0-7fc8-43d3-bc7e-df7e5b86921e)
 
 
