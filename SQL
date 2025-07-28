@@ -1,1 +1,98 @@
+## SQL Queries
+
+1. Query 1 (CREATE DATABASE)
+CREATE database PizzaSales;
+
+2. Query 2 (CREATE TABLE)
+
+a) CREATE TABLE pizzas (
+    pizza_id TEXT NOT NULL,
+    pizza_type_id TEXT NOT NULL,
+    size TEXT NOT NULL,
+    price DECIMAL(6,2) NOT NULL,
+    PRIMARY KEY (pizza_id)
+);
+
+b) CREATE TABLE pizza_types (
+    pizza_type_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    category TEXT NOT NULL,
+    ingredients TEXT NOT NULL
+    PRIMARY KEY (pizza_type_id)
+);
+
+c) CREATE TABLE orders (
+    order_id INT NOT NULL,
+    order_date DATE NOT NULL,
+    order_time TIME NOT NULL,
+    PRIMARY KEY (order_id)
+);
+
+d) CREATE TABLE orders_details (
+    order_details_id INT NOT NULL,
+    order_id INT NOT NULL,
+    pizza_id TEXT NOT NULL,
+    quantity INT NOT NULL,
+    PRIMARY KEY (order_details_id)
+);
+
+3. QUERY 3 (Use Of SELECT Statement)
+
+SELECT * FROM pizzasales.pizzas;
+SELECT * FROM pizzasales.pizza_types;
+SELECT * FROM pizzasales.orders;
+SELECT * FROM pizzasales.orders_details;
+
+4. Questions with Queries
+
+i) Retrieve the total number of orders placed
+SELECT 
+    COUNT(order_id) AS total_orders
+FROM
+    (orders);
+
+ii) Calculate the total revenue generated from pizza sales
+SELECT 
+    ROUND(SUM(orders_details.quantity * pizzas.price),
+            2) AS total_revenue
+FROM
+    orders_details
+        JOIN
+    pizzas ON pizzas.pizza_id = orders_details.pizza_id
+
+iii) Identify the highest-priced pizza
+SELECT 
+    pizza_types.name, pizzas.price
+FROM
+    pizza_types
+        JOIN
+    pizzas ON pizza_types.pizza_type_id = pizzas.pizza_type_id
+ORDER BY pizzas.price DESC
+LIMIT 1;
+
+iv) Identify the most common pizza size ordered
+SELECT 
+    pizzas.size,
+    COUNT(orders_details.order_details_id) AS order_count
+FROM
+    pizzas
+        JOIN
+    orders_details ON pizzas.pizza_id = orders_details.pizza_id
+GROUP BY pizzas.size
+ORDER BY order_count DESC
+LIMIT 1;
+
+v) List the top 5 most ordered pizza types along with their quantities
+SELECT 
+    pizza_types.name, SUM(orders_details.quantity) AS quantity
+FROM
+    pizza_types
+        JOIN
+    pizzas ON pizza_types.pizza_type_id = pizzas.pizza_type_id
+        JOIN
+    orders_details ON orders_details.pizza_id = pizzas.pizza_id
+GROUP BY pizza_types.name
+ORDER BY quantity DESC
+LIMIT 5;
+
 
